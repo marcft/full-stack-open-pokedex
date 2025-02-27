@@ -8,10 +8,12 @@ app.use(express.static('dist'))
 
 app.get('/version', (req, res) => {
   // change this string to ensure a new version deployed
-  res.send('3')
+  res.send('4')
 })
 
 app.get('/health', (req, res) => {
+  // eslint-disable-next-line no-constant-condition
+  if (true) throw 'error...  '
   res.send('ok')
 })
 
