@@ -1,4 +1,4 @@
-name: Test notify issue pipeline
+name: 'Build + Test'
 
 on:
   push:
@@ -9,16 +9,63 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  notify-discord:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Notify Discord
-        uses: rjstone/discord-webhook-notify@v1
+      - uses: actions/checkout@v4
+      - name: Basic Content Test
+        uses: tsickert/discord-webhook@v7.0.0
         with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          severity: 'info'
-          text: 'A new version of code deployed successfully'
-      - name: Debug Webhook Response
-        if: always()
-        run: |
-          curl -i -X POST ${{ secrets.DISCORD_WEBHOOK }} -H "Content-Type: application/json" -d '{"content":"Test message from GitHub Actions for issue"}'
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          content: test
+      - name: Test with JSON Payload Provided
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          raw-data: __tests__/data/content-only.json
+      - name: Upload File
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          filename: __tests__/data/content-only.json
+          username: Bill
+          content: You should definintely be able to do this
+          avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
+      - name: Discord Webhook Action With Embed
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          username: Bill
+          avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
+          embed-title: 'Foo'
+          embed-url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          embed-description: 'Bar [test](https://google.com)'
+          embed-author-name: 'Bill'
+          embed-author-icon-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-author-url: 'https://google.com'
+          embed-thumbnail-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-image-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-footer-icon-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-footer-text: 'Foot text [test](https://google.com)'
+          embed-color: 15430476
+          embed-timestamp: '2021-09-24T02:17:53+0000'
+      - name: Sleep for a second
+        run: sleep 1s
+      - name: Discord Webhook Action With Embed Description That's Too Long
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          username: Bill
+          avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
+          embed-title: 'Foo'
+          embed-url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          embed-description: 'steaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteaksteak'
+          embed-author-name: 'Bill'
+          embed-author-icon-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-author-url: 'https://google.com'
+          embed-thumbnail-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-image-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-footer-icon-url: 'https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256'
+          embed-footer-text: 'Foot text [test](https://google.com)'
+          embed-color: 15430476
+          embed-timestamp: '2021-09-24T02:17:53+0000'
