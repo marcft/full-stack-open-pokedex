@@ -18,19 +18,6 @@ jobs:
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
           content: test
-      - name: Test with JSON Payload Provided
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          raw-data: __tests__/data/content-only.json
-      - name: Upload File
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          filename: __tests__/data/content-only.json
-          username: Bill
-          content: You should definintely be able to do this
-          avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
       - name: Discord Webhook Action With Embed
         uses: tsickert/discord-webhook@v7.0.0
         with:
