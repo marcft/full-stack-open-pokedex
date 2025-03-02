@@ -45,7 +45,7 @@ jobs:
           RELEASE_BRANCHES: main
   notify:
     needs: [tag_release, simple_deployment_pipeline]
-    runs-on: windows-latest
+    runs-on: ubuntu-24.04
     if: always()
     steps:
       - name: Notify Success Discord
@@ -68,7 +68,9 @@ jobs:
           text: 'Build failed'
           details: 'Commit URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build 😓'
           footer: 'Failure'
-      - name: Debug Webhook Response
+      - name: Notify Discord (Temporary Fix)
         if: always()
         run: |
-          curl -i -X POST ${{ secrets.DISCORD_WEBHOOK }} -H "Content-Type: application/json" -d '{"content":"Test message from GitHub Actions"}'
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"username": "GitHub Bot Test", "content": "✅ Deployment successful!"}' \
+          "${{ secrets.DISCORD_WEBHOOK }}"
