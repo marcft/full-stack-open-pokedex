@@ -43,3 +43,28 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: main
+  notify:
+    needs: [tag_release, simple_deployment_pipeline]
+    runs-on: ubuntu-24.04
+    if: always()
+    steps:
+      - name: Notify Success Discord
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          severity: 'info'
+          username: 'GitHub ${{ github.actor }}'
+          text: 'A new version of Pokedex deployed successfully'
+          description: 'to https://full-stack-open-pokedex-z401.onrender.com by: ${{ github.actor }}'
+          footer: 'Success'
+      - name: Notify Failure Discord
+        uses: rjstone/discord-webhook-notify@v1
+        if: !success()
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          severity: 'error'
+          username: 'GitHub ${{ github.actor }}'
+          text: 'Build failed'
+          description: 'Commit URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build 😓'
+          footer: 'Failure'
