@@ -54,10 +54,7 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           severity: 'info'
-          username: 'GitHub ${{ github.actor }}'
-          text: 'A new version of Pokedex deployed successfully'
           description: 'to https://full-stack-open-pokedex-z401.onrender.com by: ${{ github.actor }}'
-          footer: 'Success'
       - name: Notify Failure Discord
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
