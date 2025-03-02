@@ -66,7 +66,7 @@ jobs:
           severity: 'error'
           username: 'GitHub ${{ github.actor }}'
           text: 'Build failed'
-          description: 'Commit URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build 😓'
+          details: 'Commit URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build 😓'
           footer: 'Failure'
       - name: Debug Webhook Response
         if: always()
