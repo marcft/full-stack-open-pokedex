@@ -69,5 +69,6 @@ jobs:
           description: 'Commit URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build 😓'
           footer: 'Failure'
       - name: Debug Webhook Response
+        if: always()
         run: |
           curl -i -X POST ${{ secrets.DISCORD_WEBHOOK }} -H "Content-Type: application/json" -d '{"content":"Test message from GitHub Actions"}'
