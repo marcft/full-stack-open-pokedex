@@ -1,12 +1,8 @@
 name: Health Check
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize]
+  schedule:
+    - cron: '0/10 * * * *'
 
 jobs:
   health_check:
@@ -15,7 +11,7 @@ jobs:
       - name: Check the deployed website URL
         uses: jtalk/url-health-check-action@v4
         with:
-          url: https://full-stack-open-pokedex-z401.onrender.com/no-such-page
+          url: https://full-stack-open-pokedex-z401.onrender.com/health
       - name: Notify Discord on Success
         if: success()
         uses: tsickert/discord-webhook@v7.0.0
