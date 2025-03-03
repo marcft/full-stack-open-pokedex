@@ -60,7 +60,6 @@ jobs:
           embed-color: 3077745
           embed-description: 'to https://full-stack-open-pokedex-z401.onrender.com by `${{ github.actor }}`'
           embed-footer-text: 'Severity: Informational'
-          embed-timestamp: ${{ github.event.head_commit.timestamp }}
       - name: Notify Failure Discord
         uses: tsickert/discord-webhook@v7.0.0
         if: ${{ needs.tag_release.result == 'failure' || needs.simple_deployment_pipeline.result == 'failure' }}
@@ -73,4 +72,3 @@ jobs:
           embed-color: 16731196
           embed-description: 'Commit URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }} by `${{ github.actor }}` broke the build 😓'
           embed-footer-text: 'Severity: Error'
-          embed-timestamp: ${{ github.event.head_commit.timestamp }}
