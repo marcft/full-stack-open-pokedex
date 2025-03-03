@@ -8,7 +8,8 @@ app.use(express.static('dist'))
 
 app.get('/version', (req, res) => {
   // change this string to ensure a new version deployed
-  res.send('9')
+  throw new Error('new version deployed')
+  res.send('0.1.7')
 })
 
 app.get('/health', (req, res) => {
